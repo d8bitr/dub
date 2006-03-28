@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="dub" default="build">
+
+	<property name="application.version" value="1.0.1"/>
+	<property name="application.name" value="dub"/>
+	<property name="application.jar" value="${application.name}-${application.version}.jar"/>
+	<property name="application.company" value="n/a"/>
+
+	<property name="dir.working" location="."/>
+	<property name="dir.dist" location="${dir.working}/dist"/>
+	<property name="dir.dist.anttask" location="${dir.dist}/anttask"/>
+	<property name="dir.dist.lib" location="${dir.dist}/lib"/>
+	<property name="dir.lib" location="${dir.working}/lib"/>
+	<property name="dir.support" location="${dir.lib}/support"/>
+	<property name="dir.support.launch4j" location="${dir.support}/launch4j"/>
+	<property name="dir.classes" location="${dir.working}/classes"/>
+	<property name="dir.dist.docs" location="${dir.dist}/docs"/>
+	<property name="dir.src" location="${dir.working}/src"/>
+	<property name="dir.resources" location="${dir.working}/resources"/>
+	<property name="dir.resources.images" location="${dir.resources}/images"/>
+	
+	<property name="file.launcherjar" location="${dir.dist}/${application.name}.jar"/>
+	<property name="file.applicationjar" location="${dir.dist.lib}/${application.jar}"/>
+	<property name="file.executable" location="${dir.dist}/${application.name}.exe"/>
+	<property name="file.dubicon" location="${dir.resources.images}/dub_icon.ico"/>
+
+
+
+	<path id="classpath.dub">
+		<pathelement location="${dir.support}/junit-3.8.1.jar"/>
+		<pathelement location="${dir.support}/ant-junit-1.6.4.jar"/>
+		<pathelement location="${dir.support}/ant-1.6.5.jar"/>
+		<pathelement location="${dir.lib}/forms-1.0.5.jar"/>
+		<pathelement location="${dir.lib}/looks-1.3.2.jar"/>
+		<pathelement location="${dir.lib}/animation-1.1.3.jar"/>
+		<pathelement location="${dir.lib}/jnlp.jar"/>
+		<pathelement location="${dir.lib}/jnlp-servlet.jar"/>
+		<pathelement location="${dir.lib}/oracle-10.2.0.1.0-ojdbc14.jar"/>
+	</path>
+
+
+
+	<taskdef name="junit" classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+		<classpath>
+			<pathelement location="${dir.support}/ant-junit-1.6.5.jar"/>
+			<pathelement location="${dir.support}/junit-3.8.1.jar"/>
+		</classpath>
+	</taskdef>
+
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask">
+		<classpath>
+			<pathelement location="${dir.support.launch4j}/launch4j.jar"/>
+			<pathelement location="${dir.support.launch4j}/lib/xstream.jar"/>
+		</classpath>
+	</taskdef>
+
+	
+
+	<target name="build" depends="clean, compile, tests" description="builds the sources">
+	</target>
+
+
+
+	<target name="clean" description="deletes the builded sources and ">
+		<delete dir="${dir.classes}"/>
+		<mkdir dir="${dir.classes}"/>
+		<delete dir="${dir.dist}"/>
+		<mkdir dir="${dir.dist}"/>
+	</target>
+
+
+
+	<target name="compile" depends="clean, copy-resources">
+		<javac srcdir="${dir.src}"
+			destdir="${dir.classes}"
+			classpathref="classpath.dub"
+			source="1.4"
+			debug="on"
+			fork="yes"
+			encoding="ISO-8859-1"
+			debuglevel="lines,vars,source"
+			deprecation="on"/>
+	</target>
+	
+
+
+	<target name="copy-resources">
+		<copy todir="${dir.classes}">
+			<fileset dir="${dir.src}">
+				<include name="**/*.properties"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.jpg"/>
+				<include name="**/*.jar"/>
+				<include name="**/*.png"/>
+				<include name="**/*.licence"/>
+				<include name="**/*.txt"/>
+			</fileset>
+		</copy>
+	</target>
+
+
+
+	<target name="release" depends="build-release" description="creates a complete clean distribution">
+	</target>
+	
+	
+	
+	<!--target name="build-release" depends="build, build-docs, build-anttask"-->
+	<target name="build-release" depends="build, build-anttask">
+		<jar destfile="${file.launcherjar}"
+		     index="false"
+		     basedir="${dir.classes}"
+		     includes="net/sf/dub/application/view/swing/Dub.class">
+		     <manifest>
+		     	<attribute name="Manifest-Version" value="1.0"/>
+		     	<attribute name="Created-By" value="${user.name}"/>
+		     	<attribute name="Implementation-Title" value="${application.name} Launcher"/>
+		     	<attribute name="Implementation-Version" value="${application.version}"/>
+		     	<attribute name="Main-Class" value="net.sf.dub.application.view.swing.Dub"/>
+		     	<attribute name="Class-Path" value="lib/${application.jar} lib/forms-1.0.5.jar lib/jnlp.jar lib/jnlp-servlet.jar lib/oracle-10.2.0.1.0-ojdbc14.jar lib/looks-1.3.2.jar lib/animation-1.1.3.jar"/>
+		     </manifest>
+		</jar>
+		<mkdir dir="${dir.dist.lib}"/>
+		<jar destfile="${dir.dist.lib}/${application.name}-${application.version}.jar"
+		     index="false"
+		     basedir="${dir.classes}"
+		     excludes="*/**/test/*Test.class net/sf/dub/application/view/swing/Dub.class">
+		     <manifest>
+		     	<attribute name="Manifest-Version" value="1.0"/>
+		     	<attribute name="Created-By" value="${user.name}"/>
+		     	<attribute name="Implementation-Title" value="${application.name}"/>
+		     	<attribute name="Implementation-Version" value="${application.version}"/>
+		     </manifest>
+		</jar>
+		<copy todir="${dir.dist.lib}">
+			<fileset dir="${dir.lib}" includes="*.jar"/>
+		</copy>
+		
+		<launch4j>
+			<config headerType="0"
+			        jar="${file.launcherjar}"
+			        outfile="${file.executable}"
+			        errTitle=""
+			        jarArgs=""
+			        chdir=""
+			        customProcName="true"
+			        stayAlive="false"
+			        icon="${file.dubicon}">
+				<jre path=""
+				     minVersion="1.4.2"
+				     maxVersion=""
+				     initialHeapSize="0"
+				     maxHeapSize="0"
+				     args=""/>
+				<versionInfo fileVersion="${application.version}.0"
+				             txtFileVersion="${application.name}"
+				             fileDescription="${application.name}"
+				             copyright="${application.company}"
+				             productVersion="${application.version}.0"
+				             txtProductVersion="${application.version}"
+				             productName="${application.name}"
+				             companyName="${application.company}"
+				             internalName="${application.name}"
+				             originalFilename="${application.name}.exe"/>
+			</config>
+		</launch4j>
+    </target>
+
+
+
+	<target name="build-docs" depends="clean">
+		<mkdir dir="${dir.dist.docs}"/>
+		<javadoc sourcepath="${dir.src}"
+			destdir="${dir.dist.docs}"
+			packagenames="net.sf.*"
+			classpathref="classpath.dub"
+			source="1.4"
+			Private="off"
+			Protected="on"
+			Version="on"
+			Use="on"
+			Author="on"
+			Splitindex="on"
+			Overview="${dir.src}/overview.html"
+			link="http://java.sun.com/j2se/1.4.2/docs/api/"
+			Windowtitle="dub API Documentation"
+			Doctitle="${application.name}, Version ${application.version}"
+			header="${application.name}"
+			footer="${application.company}">
+			<link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+		</javadoc>
+	</target>
+	
+	
+	
+	<target name="build-anttask" depends="compile">
+		<mkdir dir="${dir.dist.anttask}"/>
+		<jar destfile="${dir.dist.anttask}/dub-anttask-${application.version}.jar"
+		     index="true"
+		     basedir="${dir.classes}"
+		     includes="net/sf/dub/application/anttask/**/*">
+			<manifest>
+		    	<attribute name="Manifest-Version" value="1.0"/>
+		    	<attribute name="Created-By" value="${user.name}"/>
+		    	<attribute name="Implementation-Title" value="${application.name}"/>
+		    	<attribute name="Implementation-Version" value="${application.version}"/>
+			</manifest>
+		</jar>
+	</target>
+
+
+
+	<target name="tests">
+		<junit printsummary="on" haltonfailure="on" fork="yes" dir="${dir.classes}">
+			<jvmarg value="-Dfile.encoding=ISO-8859-1"/>
+			<classpath>
+				<path refid="classpath.dub"/>
+				<pathelement location="${dir.classes}"/>
+			</classpath>
+			<formatter type="xml"/>
+			<batchtest>
+				<fileset  dir="${dir.classes}">
+					<include name="net/sf/dub/application/test/*Test.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+</project>
