@@ -106,8 +106,7 @@
 	
 	
 	
-	<!--target name="build-release" depends="build, build-docs, build-anttask"-->
-	<target name="build-release" depends="build, build-anttask">
+	<target name="build-release" depends="build, build-docs, build-anttask">
 		<jar destfile="${file.launcherjar}"
 		     index="false"
 		     basedir="${dir.classes}"

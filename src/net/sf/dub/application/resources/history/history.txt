@@ -1,0 +1,9 @@
+Version 1.0.1
+=============
+- Shows now the executed SQL in the Commandline Output
+- Updated Looks library 1.3.1 -> 1.3.2
+
+
+Version 1.0.0
+=============
+- initial release
