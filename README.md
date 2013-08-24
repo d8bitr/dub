@@ -1,7 +1,12 @@
 plunger
 =======
+dub manages databasemodifications (schema-evolution) during the development process/maintenance in a centralized manner.
+The change-sets will be executed against the target database, and will keep an overview of all exising changes (new, current and past).
 
-dub manages databasemodifications (schema-evolution) during the development process/maintenance. It centralizes the changes, in order to execute them to the target database, and will keep an overview of all exising changes (new, current and past).
+Change-sets are simply  plain sql-files, which are grouped by date (filename), version (directory). The structure of files and directories are placed in a jar-file with an additionally manifest file, containing meta information and configuration properties.
+The project consist of two parts: the gui, which is responsible for importing/executing the desired versions aka modifications, and an ant-task, to create the structure and jar-file automatically during the build process.
+Only Oracle is supported as database target platform.
+
 
 Screenshots
 -----------
