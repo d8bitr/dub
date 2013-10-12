@@ -1,5 +1,5 @@
-plunger
-=======
+dub
+===
 dub manages databasemodifications (schema-evolution) during the development process/maintenance in a centralized manner.
 The change-sets will be executed against the target database, and will keep an overview of all exising changes (new, current and past).
 
