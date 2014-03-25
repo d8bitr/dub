@@ -1,9 +1,9 @@
 dub
 ===
-dub manages databasemodifications (schema-evolution) during the development process/maintenance in a centralized manner.
-The change-sets will be executed against the target database, and will keep an overview of all exising changes (new, current and past).
+dub manages database modifications (schema-evolution) during the development process/maintenance in a centralized manner.
+The change-sets will be executed against a target database, and will keep an overview of all exising changes (new, current and past).
 
-Change-sets are simply  plain sql-files, which are grouped by date (filename), version (directory). The structure of files and directories are placed in a jar-file with an additionally manifest file, containing meta information and configuration properties.
+Change-sets are simple plain sql-files, which are grouped by date (filename), version (directory). The structure of files and directories are placed in a jar-file with an additionally manifest file, containing meta information and configuration properties.
 The project consist of two parts: the gui, which is responsible for importing/executing the desired versions aka modifications, and an ant-task, to create the structure and jar-file automatically during the build process.
 Only Oracle is supported as database target platform.
 
