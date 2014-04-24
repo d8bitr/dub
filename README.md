@@ -12,21 +12,21 @@ Screenshots
 -----------
 Welcome screen (english)
 
-![Welcome screen (english)](https://github.com/d8bitr/dub/raw/master/images/readme-01.jpg)
+![Welcome screen (english)](https://github.com/galan/dub/raw/master/images/readme-01.jpg)
 
 Splashscreen
 
-![Splashscreen](https://github.com/d8bitr/dub/raw/master/images/readme-02.jpg)
+![Splashscreen](https://github.com/galan/dub/raw/master/images/readme-02.jpg)
 
 Configuration (english)
 
-![Configuration (english)](https://github.com/d8bitr/dub/raw/master/images/readme-03.jpg)
+![Configuration (english)](https://github.com/galan/dub/raw/master/images/readme-03.jpg)
 
 Dub Table selection (german)
 
-![Dub Table selection (german)](https://github.com/d8bitr/dub/raw/master/images/readme-04.jpg)
+![Dub Table selection (german)](https://github.com/galan/dub/raw/master/images/readme-04.jpg)
 
 Executing the changes (german)
 
-![Executing the changes (german)](https://github.com/d8bitr/dub/raw/master/images/readme-05.jpg)
+![Executing the changes (german)](https://github.com/galan/dub/raw/master/images/readme-05.jpg)
 
